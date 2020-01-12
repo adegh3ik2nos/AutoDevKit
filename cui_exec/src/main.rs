@@ -26,7 +26,7 @@ fn main() {
         .author(crate_authors!())
 		.about(crate_description!())
         .subcommand(SubCommand::with_name("new")
-            .about("create template settings.")
+            .about("generate template settings.")
             .arg(Arg::with_name("settings")
                 .help("settings name.")
 				.required(true)
