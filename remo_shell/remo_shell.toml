@@ -1,6 +1,6 @@
 work_dir = "../remo_shell"
 terminal = "powershell"
-command = "plink.exe [user name]@[host name] ls"
+command = "plink.exe [user name]@[host name] [cmd]"
 inputs = ["[password]"]
 result = 0
 chain_settings = ""

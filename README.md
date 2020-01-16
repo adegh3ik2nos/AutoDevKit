@@ -16,6 +16,11 @@
     - ESCキー入力で保存
 
 
+## remo_shell
+- Windowsからlinuxのshellコマンドを実行する
+- AutoDevKit/remo_shell/remo_shell.tomlの [user name] [host name] [cmd] [password] を置き換える
+- チェックはいるはずだけどPuTTYが必要
+
 # 未対応
 
 ## HTTPリクエスト送受信
