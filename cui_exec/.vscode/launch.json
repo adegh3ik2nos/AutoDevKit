@@ -10,7 +10,7 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/target/debug/cui_exec.exe",
-            "args": ["new", "test", "---dir", "./"],
+            "args": ["exec", "remo_shell", "---dir", "../remo_shell"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

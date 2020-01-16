@@ -1,0 +1,7 @@
+work_dir = "../remo_shell"
+terminal = "powershell"
+command = "plink.exe [user name]@[host name] ls"
+inputs = ["[password]"]
+result = 0
+chain_settings = ""
+failed_command = ""

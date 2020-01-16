@@ -1,0 +1,16 @@
+work_dir = "."
+terminal = "powershell"
+command = """
+foreach($dir in $env:Path.Split(";")){
+    $path = Join-Path $dir "plink.exe"
+    if(Test-Path $path){
+        exit 0
+    }
+}
+
+exit 0
+"""
+inputs = []
+result = 0
+chain_settings = "./remo_shell.toml"
+failed_command = "Write-Output \"Install PuTTY and go through the path.\""

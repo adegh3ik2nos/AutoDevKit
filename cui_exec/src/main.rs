@@ -6,8 +6,7 @@ extern crate clap;
 mod settings;
 
 use std::{env, str, fs};
-use clap::{App, Arg, ArgMatches, SubCommand};
-use std::path::Path;
+use clap::{App, Arg, SubCommand};
 
 
 enum ReturnCode {

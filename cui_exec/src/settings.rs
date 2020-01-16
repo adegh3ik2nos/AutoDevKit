@@ -68,14 +68,11 @@ pub fn exec_command(settings: &Settings) -> Result<(), failure::Error> {
 }
 
 fn _exec_command(terminal: &str, work_dir: &str, command: &str, inputs: &Vec<String>, result: i32, is_check_result: bool) -> Result<(), failure::Error> {
-    let mut process = Command::new(terminal)
-    .current_dir(work_dir)
-    .arg(command)
-    .stdin(Stdio::piped())
-    .spawn()?;
+    let mut process;
 
     //入力が指定されていれば入力
     if inputs.len() > 0 {
+        process = Command::new(terminal).current_dir(work_dir).arg(command).stdin(Stdio::piped()).spawn()?;
         match process.stdin.as_mut() {
             Some(console) => {
                 console.write_all((inputs.join("\n") + "\n").as_bytes())?;
@@ -84,9 +81,11 @@ fn _exec_command(terminal: &str, work_dir: &str, command: &str, inputs: &Vec<Str
                 return Err(failure::err_msg("mut console get failed."));
             },
         }
+    } else {
+        process = Command::new(terminal).current_dir(work_dir).arg(command).spawn()?;
     }
 
-    if result != process.wait()?.code().unwrap_or(result + 1) {
+    if is_check_result && result != process.wait()?.code().unwrap_or(result + 1) {
 		return Err(failure::err_msg("execute failed."));
     }
 
