@@ -1,7 +1,15 @@
-﻿cui_exec/target
-cui_exec/Cargo.lock
+﻿cui_exec/Cargo.lock
 gui_exec/build
 gui_exec/main.spec
 gui_exec/src/__pycache__
 gui_exec/test2.xml
 gui_exec/dist/test2.xml
+cui_exec/target/debug
+cui_exec/target/rls
+cui_exec/target/.rustc_info.json
+cui_exec/target/release/deps
+cui_exec/target/release/.fingerprint
+cui_exec/target/release/build
+cui_exec/target/release/.cargo-lock
+cui_exec/target/release/cui_exec.d
+cui_exec/target/release/cui_exec.pdb
