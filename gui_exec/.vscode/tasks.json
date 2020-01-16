@@ -7,7 +7,7 @@
             "label": "build",
             "type": "shell",
             "command": "pyinstaller",
-            "args": ["src/main.py", "--clean", "-y", "-F"]
+            "args": ["src/main.py", "--clean", "-y", "-F", "--windowed"]
         }
     ], 
     

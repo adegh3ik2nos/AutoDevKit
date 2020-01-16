@@ -3,6 +3,7 @@ name = "cui_exec"
 version = "0.1.0"
 authors = ["adegh3ik2nos <adegh3ik2nos@gmail.com>"]
 edition = "2018"
+description = "cui execute automation."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

@@ -3,4 +3,5 @@ cui_exec/Cargo.lock
 gui_exec/build
 gui_exec/main.spec
 gui_exec/src/__pycache__
-gui_exec/dist
+gui_exec/test2.xml
+gui_exec/dist/test2.xml

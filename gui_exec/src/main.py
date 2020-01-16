@@ -5,6 +5,9 @@ import pynput
 import argparse
 from lxml import etree
 
+key_name_table = {
+    "cmd": "winleft"
+}
 
 inputs = etree.Element("inputs")
 
@@ -16,32 +19,69 @@ def on_click(x, y, button, pressed):
         input.set("y", str(y))
 
         print("lclick_on: {0}".format((x, y)))
-    elif button.name == "right":
-        return False
 
 def on_keydown(key):
-    input = etree.SubElement(inputs, "input")
-    input.set("type", "key")
-    input.set("key", str(key).rstrip("'").lstrip("'"))
+    try:
+        key_name = key.name
+        if key_name in key_name_table:
+            key_name = key_name_table[key_name]
 
-    print("key: {0}".format(key))
+        if key_name == "esc":
+            return False
+        else:
+            input = etree.SubElement(inputs, "input")
+            input.set("type", "key_down")
+            input.set("key", key_name)
+
+            print("key: {0}".format(key_name))
+    except AttributeError:
+        input = etree.SubElement(inputs, "input")
+        input.set("type", "key_down")
+        input.set("key", str(key).rstrip("'").lstrip("'"))
+
+        print("key: {0}".format(key))
+
+def on_keyup(key):
+    try:
+        key_name = key.name
+        if key_name in key_name_table:
+            key_name = key_name_table[key_name]
+
+        if key_name == "esc":
+            return False
+        else:
+            input = etree.SubElement(inputs, "input")
+            input.set("type", "key_up")
+            input.set("key", key_name)
+
+            print("key: {0}".format(key_name))
+    except AttributeError:
+        input = etree.SubElement(inputs, "input")
+        input.set("type", "key_up")
+        input.set("key", str(key).rstrip("'").lstrip("'"))
+
+        print("key: {0}".format(key))
+
 
 #GUI操作のログを出力してGUI自動化設定を作成
 def command_new(args):
     settings_path = "{0}/{1}.xml".format(args.dir.rstrip("\\").rstrip("/"), args.settings)
 
-    key_listener = pynput.keyboard.Listener(on_release=on_keydown)
-    key_listener.start()
-    with pynput.mouse.Listener(
-            on_click=on_click) as mouse_listener:
-        mouse_listener.join()
-    
+    mouse_listener = pynput.mouse.Listener(on_click=on_click)
+    mouse_listener.start()
+    with pynput.keyboard.Listener(on_press=on_keydown, on_release=on_keyup) as key_listener:
+        key_listener.join()
+        
     tree = etree.ElementTree(inputs)
     tree.write(settings_path, pretty_print=True)
 
 #GUI自動化設定を使用して自動操作
 def command_exec(args):
-    settings_path = "{0}/{1}.xml".format(args.dir.rstrip("\\").rstrip("/"), args.settings)
+    dir = "."
+    if len(args.dir) > 0:
+        dir = args.dir.rstrip("\\").rstrip("/")
+    
+    settings_path = "{0}/{1}.xml".format(dir, args.settings)
 
     tree = etree.parse(settings_path)
     root = tree.getroot()
@@ -50,14 +90,16 @@ def command_exec(args):
         for input in root.iter("input"):
             type = input.get("type")
             if type == "lclick_on":
-                pyautogui.mouseDown(int(input.get("x")), int(input.get("y")), button='left')
+                pyautogui.mouseDown(int(input.get("x")), int(input.get("y")), button="left")
             elif type == "lclick_off":
                 x = int(input.get("x"))
                 y = int(input.get("y"))
                 pyautogui.moveTo(x, y, duration=2)
-                pyautogui.mouseUp(x, y, button='left')
-            elif type == "key":
+                pyautogui.mouseUp(x, y, button="left")
+            elif type == "key_down":
                 pyautogui.keyDown(input.get("key"))
+            elif type == "key_up":
+                pyautogui.keyUp(input.get("key"))
 
 
 def main():
@@ -65,7 +107,7 @@ def main():
     parser = argparse.ArgumentParser(description = "gui execute automation.")
     subparsers = parser.add_subparsers()
 
-    parser_new = subparsers.add_parser("input", help = "input getting and generate settings. (right click on exit condition.")
+    parser_new = subparsers.add_parser("input", help = "input getting and generate settings. (esc key on exit condition.")
     parser_new.add_argument("settings", help = "settings name")
     parser_new.add_argument("-d", "--dir", action = "store", required = False, help="working directory")
     parser_new.set_defaults(handler=command_new)
