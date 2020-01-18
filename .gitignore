@@ -13,3 +13,6 @@ cui_exec/target/release/build
 cui_exec/target/release/.cargo-lock
 cui_exec/target/release/cui_exec.d
 cui_exec/target/release/cui_exec.pdb
+notify/build
+notify/src/__pycache__
+notify/main.spec
