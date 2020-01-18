@@ -109,12 +109,12 @@ def main():
 
     parser_new = subparsers.add_parser("input", help = "input getting and generate settings. (esc key on exit condition.")
     parser_new.add_argument("settings", help = "settings name")
-    parser_new.add_argument("-d", "--dir", action = "store", required = False, help="working directory")
+    parser_new.add_argument("-d", "--dir", action = "store", required = False, help="working directory", type = str, default = ".")
     parser_new.set_defaults(handler=command_new)
     
     parser_exec = subparsers.add_parser("exec", help = "auto exec gui tools.")
     parser_exec.add_argument("settings", help = "settings name")
-    parser_exec.add_argument("-d", "--dir", action = "store", required = False, help="working directory")
+    parser_exec.add_argument("-d", "--dir", action = "store", required = False, help="working directory", type = str, default = ".")
     parser_exec.set_defaults(handler=command_exec)
 
     args = parser.parse_args()
