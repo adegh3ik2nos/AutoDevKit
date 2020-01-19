@@ -8,7 +8,7 @@ foreach($dir in $env:Path.Split(";")){
     }
 }
 
-exit 0
+exit 1
 """
 inputs = []
 result = 0
