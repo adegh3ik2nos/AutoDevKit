@@ -13,4 +13,4 @@ exit 0
 inputs = []
 result = 0
 chain_settings = "./remo_shell.toml"
-failed_command = "Write-Output \"Install PuTTY and go through the path.\""
+failed_command = "../notify/dist/main.exe balloon \"failed\" \"Please install PuTTY and go through the path.\""
