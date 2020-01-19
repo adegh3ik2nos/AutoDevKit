@@ -21,13 +21,12 @@
 - AutoDevKit/remo_shell/remo_shell.tomlの [user name] [host name] [cmd] [password] を置き換える
 - チェックはいるはずだけどPuTTYが必要
 
+## notify
+- ポップアップまたはバルーン通知を出す
+
 # 未対応
 
 ## HTTPリクエスト送受信
-
-
-
-## WindowsからLinux操作
 
 
 
