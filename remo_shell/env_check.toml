@@ -2,6 +2,9 @@ work_dir = "."
 terminal = "powershell"
 command = """
 foreach($dir in $env:Path.Split(";")){
+    if(-not $dir){
+        continue
+    }
     $path = Join-Path $dir "plink.exe"
     if(Test-Path $path){
         exit 0
