@@ -4,14 +4,17 @@ import time
 import pynput
 import argparse
 from lxml import etree
+import time
 
 key_name_table = {
     "cmd": "winleft"
 }
 
 inputs = etree.Element("inputs")
+start_time = time.time()
 
 def on_click(x, y, button, pressed):
+    global start_time
     if button.name == "left":
         input = etree.SubElement(inputs, "input")
         input.set("type", "lclick_on" if pressed else "lclick_off")
@@ -20,7 +23,17 @@ def on_click(x, y, button, pressed):
 
         print("lclick_on: {0}".format((x, y)))
 
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        wait = etree.SubElement(inputs, "input")
+        wait.set("type", "wait")
+        wait.set("time", str(elapsed_time))
+        start_time = end_time
+
+        print("wait: {0}".format(elapsed_time))
+
 def on_keydown(key):
+    global start_time
     try:
         key_name = key.name
         if key_name in key_name_table:
@@ -41,7 +54,17 @@ def on_keydown(key):
 
         print("key: {0}".format(key))
 
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    wait = etree.SubElement(inputs, "input")
+    wait.set("type", "wait")
+    wait.set("time", str(elapsed_time))
+    start_time = end_time
+
+    print("wait: {0}".format(elapsed_time))
+
 def on_keyup(key):
+    global start_time
     try:
         key_name = key.name
         if key_name in key_name_table:
@@ -61,6 +84,15 @@ def on_keyup(key):
         input.set("key", str(key).rstrip("'").lstrip("'"))
 
         print("key: {0}".format(key))
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    wait = etree.SubElement(inputs, "input")
+    wait.set("type", "wait")
+    wait.set("time", str(elapsed_time))
+    start_time = end_time
+
+    print("wait: {0}".format(elapsed_time))
 
 
 #GUI操作のログを出力してGUI自動化設定を作成
@@ -100,6 +132,8 @@ def command_exec(args):
                 pyautogui.keyDown(input.get("key"))
             elif type == "key_up":
                 pyautogui.keyUp(input.get("key"))
+            elif type == "wait":
+                time.sleep(float(input.get("time")))
 
 
 def main():
