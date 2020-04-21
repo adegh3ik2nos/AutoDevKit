@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/src/main.py",
-            "args": ["input", "test2", "--dir", "./"], 
+            "args": ["exec", "test3", "--dir", "./"], 
             "console": "externalTerminal"
         }
     ]

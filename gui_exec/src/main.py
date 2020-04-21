@@ -5,10 +5,14 @@ import pynput
 import argparse
 from lxml import etree
 import time
+from ctypes import windll
 
 key_name_table = {
     "cmd": "winleft"
 }
+
+scrn_w = windll.user32.GetSystemMetrics(0)
+scrn_h = windll.user32.GetSystemMetrics(1)
 
 inputs = etree.Element("inputs")
 start_time = time.time()
@@ -18,8 +22,8 @@ def on_click(x, y, button, pressed):
     if button.name == "left":
         input = etree.SubElement(inputs, "input")
         input.set("type", "lclick_on" if pressed else "lclick_off")
-        input.set("x", str(x))
-        input.set("y", str(y))
+        input.set("x", str(float(x) / float(scrn_w)))
+        input.set("y", str(float(y) / float(scrn_h)))
 
         print("lclick_on: {0}".format((x, y)))
 
@@ -71,6 +75,7 @@ def on_keyup(key):
             key_name = key_name_table[key_name]
 
         if key_name == "esc":
+            print("...end")
             return False
         else:
             input = etree.SubElement(inputs, "input")
@@ -122,10 +127,10 @@ def command_exec(args):
         for input in root.iter("input"):
             type = input.get("type")
             if type == "lclick_on":
-                pyautogui.mouseDown(int(input.get("x")), int(input.get("y")), button="left")
+                pyautogui.mouseDown(float(input.get("x")) * scrn_w, float(input.get("y")) * scrn_h, button="left")
             elif type == "lclick_off":
-                x = int(input.get("x"))
-                y = int(input.get("y"))
+                x = float(input.get("x")) * scrn_w
+                y = float(input.get("y")) * scrn_h
                 pyautogui.moveTo(x, y, duration=2)
                 pyautogui.mouseUp(x, y, button="left")
             elif type == "key_down":
@@ -153,6 +158,7 @@ def main():
 
     args = parser.parse_args()
     if hasattr(args, "handler"):
+        print("start...")
         args.handler(args)
     else:
         parser.print_help()
